@@ -10,6 +10,11 @@
 
 @implementation CalculatorViewController
 
+- (IBAction)pressDigit:(id)sender 
+{
+    NSLog(@"%@ is pressed\n", sender);
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

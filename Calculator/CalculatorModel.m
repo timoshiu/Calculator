@@ -1,4 +1,3 @@
-
 //
 //  CalculatorModel.m
 //  Calculator
@@ -79,10 +78,11 @@
     char op0 = [(NSString*) operator characterAtIndex:0];
     char ops[] = {'+', '-', '*', '/', 0};
     char *c = ops;
-    while (c) {
+    while ((c) && (*c)) {
         if (*c == op0) { 
             return YES; 
         }
+        c++;
     }
     return NO;
 }

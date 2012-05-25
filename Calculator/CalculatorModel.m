@@ -22,34 +22,29 @@
 
 @synthesize stack = _stack;
 
-- (NSMutableArray*) getStack
+- (NSMutableArray*) stack
 {
     if (_stack) { return _stack; }
     _stack = [NSMutableArray array];
     return _stack;
 }
 
-- (void) setStack: (NSMutableArray *) stack
-{
-    if (_stack) {
-        NSUInteger size = [_stack count];
-        if (size != 0) {
-            _stack = nil;
-        }
-    }
-    _stack = stack;
-}
-
 - (NSUInteger) count
 {
-    NSMutableArray *array = [self getStack];
+    NSMutableArray *array = self.stack;
     return [array count];
+}
+
+- (void) clear
+{
+    NSMutableArray* array = self.stack;
+    [array  removeAllObjects];
 }
 
 - (id) pop
 {
  
-    NSMutableArray *array = [self getStack];
+    NSMutableArray *array = self.stack;
     if (array == nil) { return nil; }
     NSUInteger size = [array count];
     if (size == 0) { return nil; }   
@@ -61,7 +56,7 @@
 - (id) push: (id) obj
 {
     if (obj == nil) { return nil; }
-    NSMutableArray* array = [self getStack];
+    NSMutableArray* array = self.stack;
     [array insertObject:obj atIndex:0];
     id result = [self eval];
     [array insertObject:result atIndex:0];

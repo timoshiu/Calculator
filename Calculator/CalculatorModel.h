@@ -13,5 +13,6 @@
 - (id) push:(id) obj;
 - (id) pop;
 - (NSUInteger) count;
+- (void) clear;
 
 @end

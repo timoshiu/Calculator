@@ -114,14 +114,12 @@
 		A8BE27321560F86F00FCF9BF /* Calculator */ = {
 			isa = PBXGroup;
 			children = (
-				A8BE273B1560F86F00FCF9BF /* CalculatorAppDelegate.h */,
-				A8BE273C1560F86F00FCF9BF /* CalculatorAppDelegate.m */,
-				A8BE273E1560F86F00FCF9BF /* MainStoryboard.storyboard */,
 				A8BE27411560F86F00FCF9BF /* CalculatorViewController.h */,
 				A8BE27421560F86F00FCF9BF /* CalculatorViewController.m */,
-				A8BE27331560F86F00FCF9BF /* Supporting Files */,
+				A8BE273E1560F86F00FCF9BF /* MainStoryboard.storyboard */,
 				A8A4E29D156217B60087F4C7 /* CalculatorModel.h */,
 				A8A4E29E156217B60087F4C7 /* CalculatorModel.m */,
+				A8BE27331560F86F00FCF9BF /* Supporting Files */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";
@@ -129,6 +127,8 @@
 		A8BE27331560F86F00FCF9BF /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				A8BE273B1560F86F00FCF9BF /* CalculatorAppDelegate.h */,
+				A8BE273C1560F86F00FCF9BF /* CalculatorAppDelegate.m */,
 				A8BE27341560F86F00FCF9BF /* Calculator-Info.plist */,
 				A8BE27351560F86F00FCF9BF /* InfoPlist.strings */,
 				A8BE27381560F86F00FCF9BF /* main.m */,

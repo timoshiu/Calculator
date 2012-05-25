@@ -108,8 +108,8 @@
     if (!op) { return top; } 
     
     char opr = [(NSString*) top characterAtIndex:0];
-    int op1 = [(NSNumber*) [self eval] intValue];
     int op2 = [(NSNumber*) [self eval] intValue];
+    int op1 = [(NSNumber*) [self eval] intValue];
     int ans = [self eval:opr A:op1 B:op2];
     NSNumber* value = [NSNumber numberWithInt:ans];
     return value;

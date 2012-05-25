@@ -11,64 +11,122 @@
 
 @interface CalculatorViewController()
 
-@property (nonatomic,strong) CalculatorModel* model;
-
-@property (weak, nonatomic) IBOutlet UILabel *display;
+@property (nonatomic, strong) NSNumber* number;
+@property (nonatomic, strong) CalculatorModel* model;
+@property (nonatomic, weak) IBOutlet UILabel *display;
 
 @end
 
 @implementation CalculatorViewController
 
+@synthesize number = _number;
 @synthesize model = _model;
 @synthesize display = _display;
 
-- (void) setModel:(CalculatorModel *)model
-{
-    _model = model;
-}
-
-- (CalculatorModel*) getModel
+- (CalculatorModel*) model
 {
     if (_model != nil) { return _model; }
     _model = [[CalculatorModel alloc] init];
     return _model;
 }
 
-- (void) updateDisplay:(id) obj
+- (void) updateDisplay
 {
-    if (obj == nil) { return; }
-    BOOL ok = [[obj class] isSubclassOfClass:[NSNumber class]];
-    if (!ok) { return; }
-    NSNumber* num = (NSNumber*) obj;
     UILabel *label = self.display;
-    [label setText:[num stringValue]];
+    NSNumber* num = self.number;
+    NSString* val = nil;
+    if (num) {
+        val = [num stringValue];
+    } else {
+        val = [NSString stringWithString:@"0"];
+    }
+    [label setText:val];
+}
+
+- (void) clearDisplay
+{
+    UILabel *label = self.display;
+    [label setText:[NSString stringWithString:@"0"]];    
+}
+
+- (void) clearNumber
+{
+    self.number = nil;
+}
+
+- (NSNumber*) appendInt: (int) low
+{
+    NSNumber* num = self.number;
+    int high = [num intValue];
+    
+    int value = high * 10 + low;
+    NSNumber* ans = [NSNumber numberWithInt:value];
+    self.number = ans;
+    return ans;    
+}
+
+- (NSNumber*) appendNumber: (NSNumber*) tail
+{
+    int low = [tail intValue];
+    NSNumber* ans = [self appendInt:low];
+    return ans;
+}
+
+- (int) intFromButton:(UIButton*) button
+{
+    UILabel* label = [button titleLabel];
+    NSString* string = [label text];
+    int value = [string intValue];
+    return value;
+}
+
+- (NSNumber*) numberFromButton: (UIButton*) button
+{   
+    int value = [self intFromButton:button];
+    NSNumber* digit = [NSNumber numberWithInt:value];
+    return digit;
+}
+
+- (NSString*) operatorFromButton: (UIButton*) button
+{
+    UILabel* label = [button titleLabel];
+    NSString* operator = [label text];
+    return operator;
 }
 
 - (IBAction)pressOperator:(id)sender 
 {
     if (sender == nil) { return; }
     NSLog(@"%@ is pressed\n", sender);
-    BOOL ok = [[sender class] isSubclassOfClass:[UIButton class]];
-    if (!ok) { return; }
-    UIButton* button = (UIButton*) sender;
-    UILabel* label = [button titleLabel];
-    NSString* operator = [label text];
-    id result = [[self getModel] push:operator];
-    [self updateDisplay:result];
+    [self.model push:self.number];
+    [self clearNumber];
+    NSString* op = [self operatorFromButton:sender];
+    NSNumber* ans = [self.model push:op];
+    [self appendNumber:ans];
+    [self updateDisplay];
+    [self clearNumber];
+}
+
+- (IBAction)pressClear:(id)sender 
+{
+    [self.model clear];
+    [self clearNumber];
+    [self clearDisplay];
+}
+
+- (IBAction)pressEnter:(id)sender 
+{
+    [self.model push:self.number];
+    [self clearNumber];
 }
 
 - (IBAction)pressDigit:(id)sender 
 {
+    if (sender == nil) { return; }
     NSLog(@"%@ is pressed\n", sender);
-    if ([[sender class] isSubclassOfClass:[UIButton class]]) {
-        UIButton* button = (UIButton*) sender;
-        UILabel* label = [button titleLabel];
-        NSString* string = [label text];
-        int value = [string intValue];
-        NSNumber* digit = [NSNumber numberWithInt:value];
-        [[self getModel] push:digit];
-        [self updateDisplay:digit];
-    }
+    int digit = [self intFromButton:sender];
+    [self appendInt:digit];
+    [self updateDisplay];
 }
 
 - (void)didReceiveMemoryWarning

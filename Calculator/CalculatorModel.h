@@ -12,6 +12,7 @@
 
 - (id) push:(id) obj;
 - (id) pop;
+- (id) objAtIndex:(NSInteger) ith;
 - (NSUInteger) count;
 - (void) clear;
 

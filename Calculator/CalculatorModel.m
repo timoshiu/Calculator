@@ -63,6 +63,11 @@
     return result;
 }
 
+- (id) objAtIndex:(NSInteger)ith
+{
+    return [self.stack objectAtIndex:ith];
+}
+
 - (BOOL) isOp:(id) operator
 {
     if (operator == nil) { return NO; }

@@ -8,9 +8,11 @@
 
 #import "CalculatorViewController.h"
 #import "CalculatorModel.h"
+#import <UIKit/UITableView.h>
 
-@interface CalculatorViewController()
+@interface CalculatorViewController() <UITableViewDataSource, UITableViewDelegate>
 
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSNumber* number;
 @property (nonatomic, strong) CalculatorModel* model;
 @property (nonatomic, weak) IBOutlet UILabel *display;
@@ -19,6 +21,7 @@
 
 @implementation CalculatorViewController
 
+@synthesize tableView = _tableView;
 @synthesize number = _number;
 @synthesize model = _model;
 @synthesize display = _display;
@@ -40,13 +43,15 @@
     } else {
         val = [NSString stringWithString:@"0"];
     }
+    [self.tableView reloadData];
     [label setText:val];
 }
 
 - (void) clearDisplay
 {
     UILabel *label = self.display;
-    [label setText:[NSString stringWithString:@"0"]];    
+    [label setText:[NSString stringWithString:@"0"]];  
+    [self.tableView reloadData];
 }
 
 - (void) clearNumber
@@ -118,6 +123,7 @@
 {
     [self.model push:self.number];
     [self clearNumber];
+    [self updateDisplay];
 }
 
 - (IBAction)pressDigit:(id)sender 
@@ -135,6 +141,30 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
+#pragma mark - DataSource Delegate for UITableView
+
+- (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *ID = @"cellID";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
+    }
+    NSNumber* number = [self.model objAtIndex:indexPath.row];
+    cell.textLabel.text = [number stringValue];
+    return cell;
+}
+
+- (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [self.model count];
+}
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+        
+}
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
@@ -146,6 +176,7 @@
 - (void)viewDidUnload
 {
     [self setDisplay:nil];
+    [self setTableView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
